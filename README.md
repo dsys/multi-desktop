@@ -1,3 +1,23 @@
+# Multi for Desktop
+
+Electorn-based desktop application for Multi.
+
+## Development 
+
+```sh
+git clone git@github.com:dsys/multi-desktop.git
+yarn install
+yarn start
+```
+
+## License
+
+Apache 2.0
+
+
+---------------
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
