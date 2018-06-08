@@ -38,7 +38,7 @@ export default class App extends React.Component {
 
     return (
       <div className="app-container">
-        <h1>Welcome to Dapper!</h1>
+        <h1>Welcome to Multi!</h1>
         <div className="subheader">
           Your address is generated and stored locally.
         </div>

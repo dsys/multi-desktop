@@ -1,53 +1,46 @@
 /* eslint-disable */
-const electron = require('electron');
-//const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const menubar = require('menubar');
+const {app, Menu, Tray, BrowserWindow} = require('electron')
 
 const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 
-let mainWindow;
+const trayWindowURL = isDev
+  ? 'http://localhost:3000'
+  : `file://${path.join(__dirname, '../build/index.html')}`
+const trayWindowWidth = 400;
+const trayWindowHeight = 300;
 
-function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680 });
-  mainWindow.loadURL(
-    isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
-  );
-  mainWindow.on('closed', () => (mainWindow = null));
+const trayIconPath = path.join(__dirname, 'menubar-icon.png');
+
+let tray = null;
+let trayWindow = null;
+
+function positionTrayWindow(trayIconBounds) {
+  const middleOfTrayIconX = trayIconBounds.x + trayIconBounds.width/2;
+  const trayWindowPosX = middleOfTrayIconX - trayWindowWidth/2;
+  const trayWindowPosY = trayIconBounds.height;
+
+  trayWindow.setPosition(trayWindowPosX, trayWindowPosY);
 }
 
-var mb = menubar({
-  icon: path.join(__dirname, 'MenubarIcon.png')
-});
+function setupTray() {
+  tray = new Tray(trayIconPath)
+  trayWindow = new BrowserWindow({width: trayWindowWidth, height: trayWindowHeight, frame: false, show:false})
+  trayWindow.loadURL(trayWindowURL);
+  trayWindow.on('blur', trayWindow.hide);
+  tray.on('click', (event, bounds, position)=>{
+    if(trayWindow.isVisible()){
+      trayWindow.hide();
+    } else {
+      positionTrayWindow(bounds);
+      trayWindow.setVisibleOnAllWorkspaces(true);
+      trayWindow.show();
+      trayWindow.setVisibleOnAllWorkspaces(false);
+    }
+  })
+}
 
-mb.on('ready', function ready() {
-  console.log('app is ready');
-});
-
-mb.on('after-create-window', function window() {
-  mb.window.loadURL(
-    isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
-  );
-});
-
-/*
-app.on('ready', createWindow);
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-*/
+app.on('ready', () => {
+  setupTray();
+})
