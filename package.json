@@ -8,6 +8,7 @@
     "color": "^3.0.0",
     "electron-is-dev": "^0.3.0",
     "ethereumjs-wallet": "^0.6.0",
+    "identicon.js": "^2.3.2",
     "menubar": "^5.2.3",
     "pouchdb-browser": "^6.4.3",
     "react": "^16.4.0",

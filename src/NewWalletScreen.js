@@ -47,6 +47,23 @@ export default class NewWalletScreen extends React.Component {
     return (hue+180)%360;
   }
 
+  handleAgreeClick = (e) => {
+    e.preventDefault();
+    const {next} = this.props;
+    const {
+      mnemonic,
+      publicKey,
+      privateKey,
+      address
+    } = this.state;
+    next({
+      mnemonic,
+      publicKey,
+      privateKey,
+      address
+    });
+  }
+
   renderMnemonic = () => {
     const {mnemonic} = this.state;
     const mnemonicWords = mnemonic.split(' ');
@@ -74,7 +91,7 @@ export default class NewWalletScreen extends React.Component {
           {this.renderMnemonic()}
         </div>
 
-        <div className="button">{`I have saved my recovery phrase`}</div>
+        <div className="button" onClick={this.handleAgreeClick}>{`I have saved my recovery phrase`}</div>
         <style jsx>{`
           .screen-container {
             height: 100%;

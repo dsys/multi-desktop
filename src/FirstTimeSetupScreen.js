@@ -5,9 +5,9 @@ import { default as colors } from './colors';
 export default class FirstTimeSetupScreen extends React.Component {
 
   handleBeginClick = (e) =>{
-    const {beginSetup} = this.props;
+    const {next} = this.props;
     e.preventDefault();
-    beginSetup();
+    next();
   }
 
   render() {

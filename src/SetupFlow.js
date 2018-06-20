@@ -1,23 +1,29 @@
 import React from 'react';
-import PouchDB from 'pouchdb-browser';
-import pkutils from 'ethereum-mnemonic-privatekey-utils';
-import bip39 from 'bip39';
 
 import { default as colors } from './colors';
 import FirstTimeSetupScreen from './FirstTimeSetupScreen';
 import NewWalletScreen from './NewWalletScreen';
+import PersonalizeWalletScreen from './PersonalizeWalletScreen';
 
 export default class SetupFlow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      CurrentScreenComponent: (<FirstTimeSetupScreen beginSetup={this.beginSetup} />),
+      CurrentScreenComponent: (<FirstTimeSetupScreen next={this.beginSetup} />),
       screenHistory: []
     };
   }
 
   beginSetup = () => {
-    this.setState({CurrentScreenComponent: (<NewWalletScreen/>)})
+    this.setState({CurrentScreenComponent: (<NewWalletScreen next={this.personalizeWallet} />)})
+  }
+
+  personalizeWallet = (walletDetails) =>{
+    this.setState({CurrentScreenComponent: (<PersonalizeWalletScreen next={this.finishSetup} walletDetails={walletDetails} />)})
+  }
+
+  finishSetup = () =>{
+
   }
 
   render() {
