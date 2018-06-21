@@ -7,19 +7,22 @@
     "bip39": "^2.5.0",
     "color": "^3.0.0",
     "electron-is-dev": "^0.3.0",
+    "ethereum-qr-code": "^0.3.0",
     "ethereumjs-wallet": "^0.6.0",
     "identicon.js": "^2.3.2",
     "menubar": "^5.2.3",
     "pouchdb-browser": "^6.4.3",
     "react": "^16.4.0",
+    "react-app-rewired": "^1.5.2",
     "react-dom": "^16.4.0",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "styled-jsx": "^2.2.6"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "devDependencies": {
