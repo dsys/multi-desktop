@@ -1,37 +1,41 @@
 import React from 'react';
 
 import { default as colors } from './colors';
-import FirstTimeSetupScreen from './FirstTimeSetupScreen';
-import NewWalletScreen from './NewWalletScreen';
-import PersonalizeWalletScreen from './PersonalizeWalletScreen';
+import WelcomeScreen from './WelcomeScreen';
 
 export default class SetupFlow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      CurrentScreenComponent: (<FirstTimeSetupScreen next={this.beginSetup} />),
-      screenHistory: []
+      ScreenComponent: WelcomeScreen,
+      props: {},
+      history: []
     };
   }
 
-  beginSetup = () => {
-    this.setState({CurrentScreenComponent: (<NewWalletScreen next={this.personalizeWallet} />)})
+  next = (nextScreenComponent, nextProps) => {
+    const {history, ScreenComponent, props} = this.state;
+    history.push({ScreenComponent, props});
+    this.setState({ScreenComponent:nextScreenComponent, props:nextProps, history});
   }
 
-  personalizeWallet = (walletDetails) =>{
-    this.setState({CurrentScreenComponent: (<PersonalizeWalletScreen next={this.finishSetup} walletDetails={walletDetails} />)})
+  back = () => {
+    const {history} = this.state;
+    if(history.length<=0) return;
+    const {ScreenComponent, props} = history.pop();
+    this.setState({ScreenComponent, history});
   }
 
-  finishSetup = () =>{
+  finish = () =>{
 
   }
 
   render() {
-    const {CurrentScreenComponent} = this.state;
+    const {ScreenComponent, props} = this.state;
 
     return (
       <div className="flow-container">
-        {CurrentScreenComponent}
+        <ScreenComponent next={this.next} back={this.back} finish={this.finish} {...props} />
         <style jsx>{`
           .flow-container {
             height: 100vh;

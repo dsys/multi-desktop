@@ -1,13 +1,14 @@
 import React from 'react';
 
+import NewMnemonicScreen from './NewMnemonicScreen';
 import { default as colors } from './colors';
 
-export default class FirstTimeSetupScreen extends React.Component {
+export default class WelcomeScreen extends React.Component {
 
   handleBeginClick = (e) =>{
     const {next} = this.props;
     e.preventDefault();
-    next();
+    next(NewMnemonicScreen);
   }
 
   render() {

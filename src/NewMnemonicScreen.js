@@ -4,9 +4,10 @@ import hdkey from 'ethereumjs-wallet/hdkey';
 import bip39 from 'bip39';
 import Color from 'color';
 
+import NewProfileScreen from './NewProfileScreen';
 import { default as colors } from './colors';
 
-export default class NewWalletScreen extends React.Component {
+export default class NewMnemonicScreen extends React.Component {
   constructor(props) {
     super(props);
     const mnemonic = bip39.generateMnemonic();
@@ -56,11 +57,13 @@ export default class NewWalletScreen extends React.Component {
       privateKey,
       address
     } = this.state;
-    next({
-      mnemonic,
-      publicKey,
-      privateKey,
-      address
+    next(NewProfileScreen, {
+      walletDetails:{
+        mnemonic,
+        publicKey,
+        privateKey,
+        address
+      }
     });
   }
 
@@ -71,7 +74,24 @@ export default class NewWalletScreen extends React.Component {
       const hue = this.getMnemonicWordHue(i, mnemonicWords.length);
       const bgHSL = `hsl(${hue}, 100%, 60%)`;
       return(
-        <span className="mnemonic-word" style={{'background':bgHSL}}>{word}</span>
+        <span className="mnemonic-word" style={{'background':bgHSL}}>
+        {word}
+        <style jsx>{`
+          .mnemonic-word{
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+
+            font-family: 'Anton';
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+
+
+            color: ${Color(colors.blue2).darken(0.8).string()};
+          }
+        `}</style>
+        </span>
       )
     })
   }
@@ -144,20 +164,6 @@ export default class NewWalletScreen extends React.Component {
             inset 0px -5px 5px -3px ${colors.black1},
             0px 1px 10px 0 ${Color(colors.blue2).lighten(0.2).string()},
             0px -1px 10px 0 ${Color(colors.blue2).lighten(0.2).string()};
-          }
-
-          .mnemonic-word{
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-
-            font-family: 'Anton';
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 0.2rem;
-
-
-            color: ${Color(colors.blue2).darken(0.8).string()};
           }
 
           .button{

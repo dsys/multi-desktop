@@ -1,4 +1,6 @@
-export default {
+import Color from 'color';
+
+const colors = {
   white1: 'white',
   white2: '#FAFAFA',
   gray1: '#333',
@@ -12,3 +14,7 @@ export default {
   yellow1: '#F5C223',
   red1: '#D0021B'
 };
+
+colors.blue2dark = Color(colors.blue2).darken(0.7).rgb().string()
+
+export default colors;

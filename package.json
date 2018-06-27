@@ -6,6 +6,8 @@
   "dependencies": {
     "bip39": "^2.5.0",
     "color": "^3.0.0",
+    "copy-to-clipboard": "^3.0.8",
+    "electron-context-menu": "^0.10.0",
     "electron-is-dev": "^0.3.0",
     "ethereum-qr-code": "^0.3.0",
     "ethereumjs-wallet": "^0.6.0",
@@ -15,6 +17,7 @@
     "react": "^16.4.0",
     "react-app-rewired": "^1.5.2",
     "react-dom": "^16.4.0",
+    "react-dropzone": "^4.2.11",
     "react-resize-detector": "^3.0.1",
     "react-scripts": "1.1.4",
     "styled-jsx": "^2.2.6"
