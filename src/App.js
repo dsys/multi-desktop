@@ -5,33 +5,29 @@ import PouchDB from 'pouchdb-browser';
 import { default as colors } from './colors';
 import SetupFlow from './SetupFlow';
 import HomeScreen from './HomeScreen';
-
-//for debugging
-const goThroughFirstTimeSetup = false;
+import ProfileORM from './ProfileORM';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFirstTimeSetup: false
+      activeProfile: null
     };
   }
 
   componentDidMount = async () => {
-    const profilesDB = new PouchDB('profiles');
-    const info = await profilesDB.info();
-    if(info.doc_count <= 0 || goThroughFirstTimeSetup){
-      this.setState({isFirstTimeSetup:true});
-    }
+    const activeProfile = await ProfileORM.getActiveProfile();
+    this.setState({activeProfile});
   };
 
   render() {
-    const { isFirstTimeSetup } = this.state;
-
+    const {activeProfile} = this.state;
+    const {apolloClient} = this.props;
+    console.log("activeProfile: "+activeProfile);
     return (
       <div className="app-container">
       {
-        isFirstTimeSetup?(<SetupFlow />):(<HomeScreen />)
+        activeProfile?(<HomeScreen activeProfile={activeProfile} apolloClient={apolloClient} />):(<SetupFlow />)
       }
       <style jsx>{`
       `}</style>

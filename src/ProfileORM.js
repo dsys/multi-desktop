@@ -10,30 +10,56 @@ const schema = {
   }
 }
 
+const metadataDocID = 'metadata';
 
 export default class ProfileORM {
   constructor(idOrObj){
-    this.lastLoaded = null;
-    this.lastSaved = null;
     this.db = new PouchDB('profiles');
     if(typeof idOrObj === "string"){
       this._id = idOrObj
-      this.load();
     } else {
       Object.assign(this, idOrObj);
     }
   }
 
-  load = async (opts) => {
+  static async getActiveProfile(){
+    const metadataDoc = await ProfileORM.getMetadataDoc();
+    const activeProfileID = metadataDoc.activeProfileID;
+    if(!activeProfileID) return null;
+    const activeProfile = new ProfileORM(activeProfileID);
+    await activeProfile.load()
+    return activeProfile
+  }
+
+  static async getMetadataDoc(){
+    const db = new PouchDB('profiles');
+    let metadataDoc = null
+    try{
+      metadataDoc = await db.get(metadataDocID);
+    } catch (e){
+      if(e.status === 404){
+        metadataDoc = {"_id":metadataDocID}
+        await db.put(metadataDoc);
+        metadataDoc = await db.get(metadataDocID)
+      }
+    }
+    return metadataDoc;
+  }
+
+  static getDB(){
+    return new PouchDB('profiles');
+  }
+
+  load = async (opts={}) => {
     const profileDoc = await this.db.get(this._id, opts);
     Object.assign(this, profileDoc);
-    this.lastLoaded = Date.now();
   }
 
   save = async () => {
     const now = Date.now();
+    if(!this._id) this._id = this.wallet.address;
     const profileDoc = {
-      _id: this._id || this.wallet.address,
+      _id: this._id,
       lastModifiedAt: now
     }
 
@@ -42,10 +68,14 @@ export default class ProfileORM {
     })
 
     const response = await this.db.put(profileDoc);
-    if(response.ok){
-      this.lastSaved = now
-      this._rev = response.rev;
-    }
+    await this.load();
+  }
+
+  setAsActiveProfile = async () => {
+    let metadataDoc = await ProfileORM.getMetadataDoc();
+    metadataDoc['activeProfileID'] = this._id;
+
+    return this.db.put(metadataDoc);
   }
 
   getProfileImgURL = async () => {

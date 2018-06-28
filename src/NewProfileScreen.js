@@ -31,7 +31,13 @@ export default class NewProfileScreen extends React.Component {
   handleCreateProfileClick = async (e) => {
     e.preventDefault();
     const {profile} = this.state;
-    profile.save();
+    console.log('handleCreateProfileClick')
+    await profile.save();
+    console.log('after profile.save()')
+    await profile.setAsActiveProfile();
+    console.log('after profile.setAsActiveProfile()')
+    const metadataDoc = await ProfileORM.getMetadataDoc()
+    console.log(`metadataDoc: ${JSON.stringify(metadataDoc, null, 4)}`);
   }
 
   handleProfilePicUpdate = (blob) => {

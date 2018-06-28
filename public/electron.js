@@ -8,8 +8,8 @@ const isDev = require('electron-is-dev');
 const trayWindowURL = isDev
   ? 'http://localhost:3000'
   : `file://${path.join(__dirname, '../build/index.html')}`
-const trayWindowWidth = 400;
-const trayWindowHeight = 300;
+const trayWindowWidth = 600;
+const trayWindowHeight = 400;
 
 const trayIconPath = path.join(__dirname, 'menubar-icon.png');
 
