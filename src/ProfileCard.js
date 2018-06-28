@@ -7,9 +7,6 @@ import TextOverflowCenter from './TextOverflowCenter';
 import ProfilePic from './ProfilePic';
 import { default as colors } from "./colors";
 
-//According to ISO/IEC 7810#ID-1
-const creditCardAspectRatio = 2.125 / 3.37;
-
 export default class ProfileCard extends React.Component {
   constructor(props) {
     super(props);
@@ -104,27 +101,6 @@ export default class ProfileCard extends React.Component {
 
           .name input::placeholder{
             color: ${colors.white2};
-          }
-
-          .address {
-            position: relative;
-            width: 100%;
-            font: ${addressFontCSS};
-            cursor: pointer;
-          }
-
-          .copy-confirmation{
-            height: 0;
-            overflow: hidden;
-            width: 100%;
-            position: absolute;
-            top: 28px;
-            left: 0;
-            transition: height 0.2s ease-in-out;
-          }
-
-          .copy-confirmation.show{
-            height: 24px;
           }
         `}</style>
       </div>

@@ -53,6 +53,7 @@ export default class TextOverflowCenter extends React.Component {
   }
 
   setContainerRef = (element) =>{
+    if(!element){return};
     const bounds = element.getBoundingClientRect();
     const truncatedText = this.getTruncatedText(bounds.width);
     if(truncatedText!=this.state.truncatedText){

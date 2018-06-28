@@ -6,9 +6,6 @@ import copy from 'copy-to-clipboard';
 
 import { default as colors } from "./colors";
 
-//According to ISO/IEC 7810#ID-1
-const creditCardAspectRatio = 2.125 / 3.37;
-
 export default class WalletCard extends React.Component {
   constructor(props) {
     super(props);
@@ -33,14 +30,34 @@ export default class WalletCard extends React.Component {
   }
 
   render() {
-    const { address } = this.props;
+    const {showCopyConfirmation} = this.state;
+    const { address, font, copyable } = this.props;
 
     return (
       <div className="container">
-        <TextOverflowCenter text={address} font={addressFontCSS} />
-        <div className={`copy-confirmation ${showCopyConfirmation?'show':'hide'}`}>Copied to clipboard</div>
+        <TextOverflowCenter text={address} font={font} />
+        <div className={`copy-confirmation ${copyable&&showCopyConfirmation?'show':'hide'}`}>Copied to clipboard</div>
         <style jsx>{`
-          ${css}
+          .container {
+            position: relative;
+            width: 100%;
+            font: ${font};
+            cursor: ${copyable?'pointer':'inherit'};
+          }
+
+          .copy-confirmation{
+            height: 0;
+            overflow: hidden;
+            width: 100%;
+            position: absolute;
+            top: 28px;
+            left: 0;
+            transition: height 0.2s ease-in-out;
+          }
+
+          .copy-confirmation.show{
+            height: 24px;
+          }
         `}</style>
       </div>
     );
