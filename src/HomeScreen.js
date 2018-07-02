@@ -41,7 +41,7 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-const ROW_HEIGHT = 80;
+const ROW_HEIGHT = 70;
 const EXPANDED_ROW_HEIGHT = 300;
 
 export default class HomeScreen extends React.Component {
@@ -106,6 +106,7 @@ export default class HomeScreen extends React.Component {
     const transaction = transactions[params.index];
     const transactionMetadata = this.getTransactionMetadata(transaction);
     const fontCSS = "24px monospace"
+    const transactionHeightPadding = 20;
 
     return (
       <div className="transaction-row" key={params.key} style={params.style}>
@@ -113,7 +114,7 @@ export default class HomeScreen extends React.Component {
           <div className={`value ${transactionMetadata.type}`}>
             {transactionMetadata.value}
           </div>
-          <div className="other-address">
+          <div className="address">
             <Address address={transactionMetadata.address} font={fontCSS} />
           </div>
         </div>
@@ -126,20 +127,24 @@ export default class HomeScreen extends React.Component {
             padding: 10px 100px;
             color: ${colors.white2};
             font: ${fontCSS};
+            overflow: hidden;
           }
 
           .transaction{
-            padding: 10px;
+            height: ${ROW_HEIGHT-transactionHeightPadding}px;
+            box-sizing: border-box;
+            padding: 10px ${transactionHeightPadding}px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
 
-            border-radius: 50px;
+            border-radius: 5px;
 
             background-color: ${transactionMetadata.bgColor};
           }
 
-          .other-address{
+          .address{
+            text-align: right;
             width: 50%;
           }
         `}</style>
@@ -158,6 +163,7 @@ export default class HomeScreen extends React.Component {
             <AutoSizer>
               {({ width, height }) => (
                 <List
+                  className="virtualized-list"
                   width={width}
                   height={height}
                   rowRenderer={this.rowRenderer}
@@ -206,6 +212,10 @@ export default class HomeScreen extends React.Component {
             inset 0px -5px 5px -3px ${colors.black1},
             0px 1px 10px 0 ${Color(colors.blue2).lighten(0.2).string()},
             0px -1px 10px 0 ${Color(colors.blue2).lighten(0.2).string()};
+          }
+
+          :global(.virtualized-list){
+            padding: 10px 0;
           }
 
 
