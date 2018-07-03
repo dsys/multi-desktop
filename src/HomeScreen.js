@@ -5,8 +5,9 @@ import { AutoSizer, InfiniteLoader, List } from "react-virtualized";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import Color from 'color';
+import _ from 'lodash';
 
-import Address from './Address';
+import TransactionList from './TransactionList';
 import { default as colors } from "./colors";
 
 const GET_TRANSACTIONS = gql`
@@ -52,10 +53,6 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    this.fetchTransactions();
-  };
-
   fetchTransactions = async () => {
     const { activeProfile, apolloClient } = this.props;
     const hash = activeProfile.wallet.address;
@@ -64,7 +61,7 @@ export default class HomeScreen extends React.Component {
       variables: { address: "0xEf13759c4Ae259aE9D17D43E65EF8c6C39035F24" }
     });
     console.log(JSON.stringify(data, null, 4));
-    this.setState({ transactions: data.ethereumAddress.transactions, errors, loading });
+    this.setState({ transactions: [...data.ethereumAddress.transactions], errors, loading });
   };
 
   getTransactionMetadata = (transaction) =>{
@@ -95,6 +92,15 @@ export default class HomeScreen extends React.Component {
     }
   }
 
+  handleTransactionRowClick = (txIndex, e) => {
+    const { transactions } = this.state;
+    e.preventDefault();
+    const transaction = transactions[txIndex];
+    console.log(transaction);
+    transaction.expanded = true;
+    this.setState({transactions});
+  }
+
   rowHeight = (params) => {
     const { transactions } = this.state;
     return transactions[params.index].expanded ? EXPANDED_ROW_HEIGHT : ROW_HEIGHT;
@@ -109,7 +115,7 @@ export default class HomeScreen extends React.Component {
     const transactionHeightPadding = 20;
 
     return (
-      <div className="transaction-row" key={params.key} style={params.style}>
+      <div className="transaction-row" onClick={(e)=>{this.handleTransactionRowClick(params.index, e)} } key={params.key} style={params.style}>
         <div className="transaction">
           <div className={`value ${transactionMetadata.type}`}>
             {transactionMetadata.value}
@@ -139,8 +145,16 @@ export default class HomeScreen extends React.Component {
             justify-content: space-between;
 
             border-radius: 5px;
-
             background-color: ${transactionMetadata.bgColor};
+            cursor: pointer;
+          }
+
+          .transaction-row.expanded{
+            height: ${EXPANDED_ROW_HEIGHT}px;
+          }
+
+          .transaction-row.expanded .transaction{
+            height: ${EXPANDED_ROW_HEIGHT-transactionHeightPadding}px;
           }
 
           .address{
@@ -154,24 +168,13 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const { activeProfile } = this.props;
-    const { transactions } = this.state;
+    const { transactions, selectedTransaction } = this.state;
     return (
       <div className="screen-container">
         <div className='header'>Transactions</div>
         <div className="transaction-list-container">
           <div className="well">
-            <AutoSizer>
-              {({ width, height }) => (
-                <List
-                  className="virtualized-list"
-                  width={width}
-                  height={height}
-                  rowRenderer={this.rowRenderer}
-                  rowCount={transactions.length}
-                  rowHeight={this.rowHeight}
-                />
-              )}
-            </AutoSizer>
+            <TransactionList activeProfile={activeProfile} />
           </div>
         </div>
         <style jsx>{`
@@ -203,6 +206,7 @@ export default class HomeScreen extends React.Component {
           }
 
           .well {
+            position: relative;
             width: 100%;
             box-sizing: border-box;
             background: ${Color(colors.blue2).darken(0.7).string()};
