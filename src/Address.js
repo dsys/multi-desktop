@@ -6,7 +6,7 @@ import copy from 'copy-to-clipboard';
 
 import { default as colors } from "./colors";
 
-export default class WalletCard extends React.Component {
+export default class Address extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

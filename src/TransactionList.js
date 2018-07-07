@@ -140,7 +140,7 @@ class VirtualTransactionList extends React.Component {
             </div>
             <div className="details">
               <pre>
-              {JSON.stringify(transaction, null, 4)}
+                {JSON.stringify(transaction, null, 4)}
               </pre>
             </div>
           </div>

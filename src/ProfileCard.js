@@ -2,8 +2,7 @@
 import React from "react";
 import copy from 'copy-to-clipboard';
 
-import AddressQR from "./AddressQR";
-import TextOverflowCenter from './TextOverflowCenter';
+import Address from "./Address";
 import ProfilePic from './ProfilePic';
 import { default as colors } from "./colors";
 
@@ -49,8 +48,7 @@ export default class ProfileCard extends React.Component {
             }
             </div>
             <div className="address" onClick={this.handleAddressClick}>
-              <TextOverflowCenter text={profile.wallet.address} font={addressFontCSS} />
-              <div className={`copy-confirmation ${showCopyConfirmation?'show':'hide'}`}>Copied to clipboard</div>
+              <Address address={profile.wallet.address} />
             </div>
           </div>
 
@@ -63,13 +61,12 @@ export default class ProfileCard extends React.Component {
             align-items: center;
 
             position: relative;
-            padding: 20px;
             overflow: hidden;
           }
 
           .profile-pic-container{
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             border-radius: 10px;
             background: ${colors.white2};
             border: 10px solid ${colors.white2};
@@ -85,8 +82,8 @@ export default class ProfileCard extends React.Component {
 
           .name {
             width: 100%;
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 5px;
           }
 
           .name input{
