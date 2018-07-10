@@ -6,6 +6,8 @@ import copy from 'copy-to-clipboard';
 
 import { default as colors } from "./colors";
 
+const OVERFLOW_TYPES = ["MIDDLE", "END"];
+
 export default class Address extends React.Component {
   constructor(props) {
     super(props);
@@ -30,12 +32,21 @@ export default class Address extends React.Component {
   }
 
   render() {
-    const {showCopyConfirmation} = this.state;
-    const { address, font, copyable } = this.props;
+    const { showCopyConfirmation } = this.state;
+    const { address, font, copyable, overflow="CENTER" } = this.props;
 
     return (
       <div className="container">
-        <TextOverflowCenter text={address} font={font} />
+        {
+          overflow == "CENTER"
+          ? (<TextOverflowCenter text={address} font={font} />)
+          : (
+              <div className="address-container">
+                <span className="0x-label">{`0x`}</span><span className="address">{address}</span>
+              </div>
+            )
+        }
+
         <div className={`copy-confirmation ${copyable&&showCopyConfirmation?'show':'hide'}`}>Copied to clipboard</div>
         <style jsx>{`
           .container {
@@ -57,6 +68,18 @@ export default class Address extends React.Component {
 
           .copy-confirmation.show{
             height: 24px;
+          }
+
+          .address-container{
+            display: flex;
+            flex-direction: row;
+          }
+
+          .address{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            ${overflow=="START" ? "direction: rtl;" : ""}
           }
         `}</style>
       </div>

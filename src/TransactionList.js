@@ -7,8 +7,10 @@ import { Query } from "react-apollo";
 import Color from "color";
 import _ from "lodash";
 
-import Address from "./Address";
+import Transaction from "./Transaction";
 import { default as colors } from "./colors";
+
+const debuggingEthAddress = "0xEf13759c4Ae259aE9D17D43E65EF8c6C39035F24"
 
 const GET_TRANSACTIONS = gql`
   query ethereumAddress($address: EthereumAddressString!) {
@@ -18,6 +20,10 @@ const GET_TRANSACTIONS = gql`
         hash
         nonce
         transactionIndex
+        block{
+          timestamp
+          transactionCount
+        }
         from {
           display
         }
@@ -32,6 +38,7 @@ const GET_TRANSACTIONS = gql`
         }
         gas
         gasPrice {
+          gwei
           ether
         }
         gasUsed
@@ -61,62 +68,30 @@ class VirtualTransactionList extends React.Component {
     this.setState({transactionRows: transactions.map(tx=>_.clone(tx))})
   }
 
-  getTransactionMetadata = transaction => {
-    const { activeProfile: { wallet: { address } } } = this.props;
-    if (transaction.to) {
-      if (transaction.from == address) {
-        return {
-          type: "SEND",
-          bgColor: colors.red1,
-          address: transaction.to.display,
-          value: `-${transaction.value.ether}`
-        };
-      } else {
-        return {
-          type: "RECEIVE",
-          bgColor: colors.green1,
-          address: transaction.from.display,
-          value: `+${transaction.value.ether}`
-        };
-      }
-    } else {
-      return {
-        type: "CREATE",
-        bgColor: colors.blue2,
-        address: transaction.contractAddress.display,
-        value: `New Contract`
-      };
-    }
-  };
+  remeasureRow = (index) => {
+    this._cellMeasurerCache.clear(index,0);
+    this.listRef.recomputeRowHeights();
+  }
 
   handleTransactionRowClick = (index, e) => {
     e.preventDefault();
-    console.log(`handleTransactionRowClick: index: ${index}`);
     const { transactionRows } = this.state;
     transactionRows[index].expanded = !transactionRows[index].expanded
     this.setState({transactionRows}, ()=>{
-      console.log(`setState callback: row: ${JSON.stringify(this.state.transactionRows[index], null, 4)}`);
-      this._cellMeasurerCache.clear(index,0);
-      this.listRef.recomputeRowHeights();
+      this.remeasureRow(index);
     });
   }
 
   renderRow = ({ index, key, parent, style}) => {
-    const { transactions } = this.props;
+    const { transactions, activeProfile } = this.props;
     const { transactionRows } = this.state;
     const transaction = transactions[index];
-    const transactionMetadata = this.getTransactionMetadata(transaction);
+
     const clickHandler = (e)=>{return this.handleTransactionRowClick(index, e)}
 
     const rowExpanded = transactionRows[index].expanded;
-    if(index==0){
-      console.log(`rowRender(0): expanded: ${rowExpanded}`);
-    }
-    const fontCSS = "24px monospace";
-    const transactionHeightPadding = 20;
 
     return (
-
       <CellMeasurer
         cache={this._cellMeasurerCache}
         columnIndex={0}
@@ -130,19 +105,12 @@ class VirtualTransactionList extends React.Component {
           style={style}
         >
           <div className="transaction">
-            <div className="summary">
-              <div className={`value ${transactionMetadata.type}`}>
-                {transactionMetadata.value}
-              </div>
-              <div className="address">
-                <Address address={transactionMetadata.address} font={fontCSS} />
-              </div>
-            </div>
-            <div className="details">
-              <pre>
-                {JSON.stringify(transaction, null, 4)}
-              </pre>
-            </div>
+            <Transaction transaction={transaction} activeProfile={activeProfile} />
+          </div>
+          <div className="transaction-details">
+            <pre>
+              {JSON.stringify(transaction, null, 4)}
+            </pre>
           </div>
 
           <style jsx>{`
@@ -151,38 +119,18 @@ class VirtualTransactionList extends React.Component {
               box-sizing: border-box;
               padding: 10px 100px;
               color: ${colors.white2};
-              font: ${fontCSS};
             }
 
-            .transaction {
-              height: 100%;
-              box-sizing: border-box;
-              padding: 10px ${transactionHeightPadding}px;
-              display: flex;
-              flex-direction: column;
-
-              border-radius: 5px;
-              background-color: ${transactionMetadata.bgColor};
-              cursor: pointer;
+            .transaction-row:first-child {
+              padding-top: 20px;
             }
 
-            .summary{
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-            }
-
-            .details{
+            .transaction-details{
               font-size: 14px;
             }
 
-            .transaction-row.collapsed .details{
+            .transaction-row.collapsed .transaction-details{
               display: none;
-            }
-
-            .address {
-              text-align: right;
-              width: 50%;
             }
           `}</style>
         </div>
@@ -200,6 +148,7 @@ class VirtualTransactionList extends React.Component {
             width={width}
             height={height}
             rowRenderer={this.renderRow}
+            onRowsRendered={this.remeasureRows}
             rowCount={transactionRows.length}
             rowHeight={this._cellMeasurerCache.rowHeight}
             deferredMeasurementCache={this._cellMeasurerCache}
@@ -218,7 +167,7 @@ export default class TransactionList extends React.Component {
     return (
       <Query
         query={GET_TRANSACTIONS}
-        variables={{ address: "0xEf13759c4Ae259aE9D17D43E65EF8c6C39035F24" }}
+        variables={{ address: debuggingEthAddress }}
       >
         {({ loading, error, data }) => {
           if (loading) return `Loading...`;
