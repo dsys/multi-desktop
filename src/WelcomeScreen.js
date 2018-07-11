@@ -1,30 +1,36 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import NewMnemonicScreen from './NewMnemonicScreen';
 import { default as colors } from './colors';
 
 export default class WelcomeScreen extends React.Component {
 
-  handleBeginClick = (e) =>{
-    const {next} = this.props;
-    e.preventDefault();
-    next(NewMnemonicScreen);
-  }
-
   render() {
     return (
       <div className="screen-container">
-        <div className="header">Welcome to Multi!</div>
-        <div className="subheader">
-          {`Let's get started by generating your private key.`}
+
+        <div className="centering-container">
+          <div className="header">
+            {`Welcome to Multi!`}
+          </div>
+          <div className="buttons">
+            <Link className="button" to="/register">
+              <div className="label">{`Get Started`}</div>
+              <div className="emoji">🚀</div>
+            </Link>
+            <Link className="button" to="/register">
+              <div className="label">{`Link Device`}</div>
+              <div className="emoji">🔗</div>
+            </Link>
+          </div>
         </div>
-        <div className="button" onClick={this.handleBeginClick}>{`Let's Go!`}</div>
+
         <style jsx>{`
           .screen-container {
-            height: 100%;
-            width: 100%;
+            height: 100vh;
+            width: 100vw;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
 
@@ -33,34 +39,62 @@ export default class WelcomeScreen extends React.Component {
 
             font-family: Roboto;
             background-color: ${colors.blue2};
-            color: ${colors.white2};
+          }
+          ::selection {
+            background: #BC5D29;
+          }
+
+          .centering-container{
+            display: flex;
+            flex-direction: column;
           }
 
           .header {
             font-family: Lobster;
-            font-size: 32px;
+            font-size: 64px;
             font-weight: 700;
+            text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+            color: ${colors.white2};
           }
 
-          .subheader{
-            text-align: center;
-          }
-
-          .button{
+          .buttons{
+            width: 100%;
             display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin-top: 10px;
+          }
+
+          .buttons :global(.button){
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
 
-            margin-top: 20px;
+            margin-left: 20px;
             padding: 10px 20px;
 
-            font-weight: 700;
+            font-family: Lobster;
             border-radius: 5px;
-            border: 5px solid ${colors.white2};
             cursor: pointer;
+            color: ${colors.white2};
+            text-decoration: none;
           }
 
-          .button:hover{
+          .buttons :global(.button:first-child){
+            margin-left: 0;
+          }
+
+          .buttons :global(.button) .emoji{
+            font-size: 80px;
+            text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+          }
+
+          .buttons :global(.button) .label{
+            font-size: 40px;
+          }
+
+          .buttons :global(.button:hover){
             background: ${colors.white2};
             color: ${colors.blue2};
           }

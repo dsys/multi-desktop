@@ -1,37 +1,26 @@
 /* eslint-disable */
 import React from 'react';
 import PouchDB from 'pouchdb-browser';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { default as colors } from './colors';
-import SetupFlow from './SetupFlow';
+import { ActiveProfile } from './ProfileManager';
 import HomeScreen from './HomeScreen';
-import ProfileORM from './ProfileORM';
+import WelcomeScreen from './WelcomeScreen';
+
+const SETUP_DEV = true;
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeProfile: null
-    };
-  }
-
-  componentDidMount = async () => {
-    const activeProfile = await ProfileORM.getActiveProfile();
-    this.setState({activeProfile});
-  };
-
   render() {
-    const {activeProfile} = this.state;
-    const {apolloClient} = this.props;
-    console.log("activeProfile: "+activeProfile);
     return (
-      <div className="app-container">
-      {
-        activeProfile?(<HomeScreen activeProfile={activeProfile} apolloClient={apolloClient} />):(<SetupFlow />)
-      }
-      <style jsx>{`
-      `}</style>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/welcome" component={ WelcomeScreen } />
+          <Route path="/register" component={ WelcomeScreen } />
+          <Route path="/phone-verification" component={ WelcomeScreen } />
+          <Route path="/" component={ (ActiveProfile && !SETUP_DEV) ? HomeScreen:WelcomeScreen } />
+        </Switch>
+      </Router>
     );
   }
 }
