@@ -45,6 +45,8 @@ export default class HomeScreen extends React.Component {
             padding: 20px 100px;
             box-sizing: border-box;
             color: ${colors.white2};
+            -webkit-app-region: drag;
+            -webkit-user-select: none;
           }
 
           .transaction-list-container{

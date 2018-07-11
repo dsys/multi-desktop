@@ -1,20 +1,24 @@
 /* eslint-disable */
 const {app, Menu, Tray, BrowserWindow} = require('electron')
-
 const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 
+let primaryWindow = null;
+const primaryWindowURL = isDev
+  ? 'http://localhost:3000'
+  : `file://${path.join(__dirname, '../build/index.html')}`
+const primaryWindowWidth = 1200;
+const primaryWindowHeight = 800;
+
+let tray = null;
+let trayWindow = null;
 const trayWindowURL = isDev
   ? 'http://localhost:3000'
   : `file://${path.join(__dirname, '../build/index.html')}`
 const trayWindowWidth = 600;
 const trayWindowHeight = 400;
-
 const trayIconPath = path.join(__dirname, 'menubar-icon.png');
-
-let tray = null;
-let trayWindow = null;
 
 function positionTrayWindow(trayIconBounds) {
   const middleOfTrayIconX = trayIconBounds.x + trayIconBounds.width/2;
@@ -41,6 +45,11 @@ function setupTray() {
   })
 }
 
+function setupPrimaryWindow() {
+  primaryWindow = new BrowserWindow({width: primaryWindowWidth, height: primaryWindowHeight, titleBarStyle: 'hiddenInset'})
+  primaryWindow.loadURL(primaryWindowURL);
+}
+
 require('electron-context-menu')({
     prepend: (params, browserWindow) => [{
         label: 'Rainbow',
@@ -50,5 +59,6 @@ require('electron-context-menu')({
 });
 
 app.on('ready', () => {
+  setupPrimaryWindow();
   setupTray();
 })
