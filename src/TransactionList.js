@@ -12,7 +12,7 @@ import { default as colors } from "./colors";
 
 const debuggingEthAddress = "0xEf13759c4Ae259aE9D17D43E65EF8c6C39035F24"
 
-const GET_TRANSACTIONS = gql`
+const GET_TRANSACTIONS = gql(`
   query ethereumAddress($address: EthereumAddressString!) {
     ethereumAddress(address: $address) {
       transactions {
@@ -47,7 +47,7 @@ const GET_TRANSACTIONS = gql`
       }
     }
   }
-`;
+`);
 
 const MIN_ROW_HEIGHT = 70;
 
