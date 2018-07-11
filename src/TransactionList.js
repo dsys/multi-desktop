@@ -117,12 +117,12 @@ class VirtualTransactionList extends React.Component {
             .transaction-row {
               width: 100%;
               box-sizing: border-box;
-              padding: 10px 100px;
+              padding: 5px 100px;
               color: ${colors.white2};
             }
 
             .transaction-row:first-child {
-              padding-top: 20px;
+              padding-top: 10px;
             }
 
             .transaction-details{

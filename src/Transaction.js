@@ -112,7 +112,7 @@ export default class Transaction extends React.Component {
             width: 100%;
             height: 100%;
             box-sizing: border-box;
-            padding: 10px;
+            padding: 20px;
             display: flex;
             flex-direction: row;
 
@@ -138,7 +138,7 @@ export default class Transaction extends React.Component {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            margin-left: 10px;
+            margin-left: 15px;
           }
 
           .sentence{
