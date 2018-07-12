@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-
+import ScreenStyles from './ScreenStyles';
 import { default as colors } from './colors';
 
 export default class WelcomeScreen extends React.Component {
@@ -25,7 +25,7 @@ export default class WelcomeScreen extends React.Component {
             </Link>
           </div>
         </div>
-
+        {ScreenStyles}
         <style jsx>{`
           .centering-container{
             display: flex;

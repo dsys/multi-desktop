@@ -1,7 +1,6 @@
 import React from 'react';
 import { default as colors } from './colors';
 
-
 export default (
   <style jsx global>{`
     .screen-container {

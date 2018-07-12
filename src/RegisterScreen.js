@@ -5,7 +5,7 @@ import { Query } from "react-apollo";
 import MockCheckENSQuery from './MockCheckENSQuery'
 
 import { default as colors } from './colors';
-import ScreenStyle from "./ScreenStyle";
+import ScreenStyles from "./ScreenStyles";
 
 const GQL_mutation_registerENS = gql(`
   mutation registerENS($subdomain: String!) {
@@ -33,6 +33,7 @@ export default class RegisterScreen extends React.Component {
     const {subdomain} = this.state;
     return(
       <div className="screen-container">
+        <div className="header"></div>
         <input value={subdomain} onChange={this.handleInput} name="subdomain" type="text" />
         <MockCheckENSQuery skip={!subdomain} subdomain={subdomain} mockData={"YOYOYO"}>
           {({ loading, error, data }) => {
@@ -40,13 +41,12 @@ export default class RegisterScreen extends React.Component {
             if (error) return `Error!: ${error}`;
             return (
               <div className="ens-check-results">
-                <div>"HELLO"</div>
                 {JSON.stringify(data, null, 4)}
               </div>
             );
           }}
         </MockCheckENSQuery>
-        {ScreenStyle}
+        {ScreenStyles}
         <style jsx>{`
 
         `}</style>
