@@ -15,7 +15,9 @@ export default (
       box-sizing: border-box;
 
       font-family: Roboto;
-      background-color: ${colors.blue2};
+
+      background: rgb(9,9,121);
+      background: linear-gradient(320deg, rgba(9,9,121,1) 16%, rgba(0,212,255,1) 100%);
     }
     ::selection {
       background: #BC5D29;

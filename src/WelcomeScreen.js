@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 import ScreenStyles from './ScreenStyles';
+import H1 from './H1';
 import { default as colors } from './colors';
 
 export default class WelcomeScreen extends React.Component {
@@ -11,9 +12,9 @@ export default class WelcomeScreen extends React.Component {
       <div className="screen-container">
 
         <div className="centering-container">
-          <div className="header">
+          <H1>
             {`Welcome to Multi!`}
-          </div>
+          </H1>
           <div className="buttons">
             <Link className="button" to="/register">
               <div className="label">{`Get Started`}</div>
@@ -30,14 +31,6 @@ export default class WelcomeScreen extends React.Component {
           .centering-container{
             display: flex;
             flex-direction: column;
-          }
-
-          .header {
-            font-family: Lobster;
-            font-size: 64px;
-            font-weight: 700;
-            text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
-            color: ${colors.white2};
           }
 
           .buttons{

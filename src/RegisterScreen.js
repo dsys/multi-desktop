@@ -5,6 +5,9 @@ import { Query } from "react-apollo";
 import MockCheckENSQuery from './MockCheckENSQuery'
 import { Link } from "react-router-dom";
 
+import H1 from './H1';
+import GlassButton from './GlassButton';
+import GlassTextInput from './GlassTextInput'
 import { default as colors } from './colors';
 import ScreenStyles from "./ScreenStyles";
 
@@ -21,44 +24,55 @@ export default class RegisterScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      subdomain: null
+      runENSQuery: false,
+      subdomain: ""
     };
+    this.inputDebounceTimeout = null;
   }
 
   handleInput = (e) => {
     const subdomain = e.target.value;
-    this.setState({subdomain});
+    this.setState({subdomain, runENSQuery:false});
+
+    if(subdomain!==""){
+      clearTimeout(this.inputDebounceTimeout);
+      this.inputDebounceTimeout = setTimeout(()=>{
+        this.inputDebounceTimeout = null;
+        this.setState({runENSQuery:true});
+      }, 300)
+    }
   }
 
   render() {
-    const {subdomain} = this.state;
+    const {runENSQuery, subdomain} = this.state;
     return(
       <div className="screen-container">
-        <div className="shrinkwrap-container">
-          <div className="header">Pick A Username</div>
-          <input className="subdomain-input" value={subdomain} onChange={this.handleInput} name="subdomain" type="text" />
-          <div className="availability">
-            <MockCheckENSQuery skip={!subdomain} subdomain={subdomain}>
-              {({ loading, error, data }) => {
-                if (loading) return `Loading...`;
-                if (error) return `Error!: ${error}`;
-                return (
-                  <div className="ens-check-results">
-                    {data.checkENS.available?"available":"not available"}
+
+        <MockCheckENSQuery skip={!runENSQuery} subdomain={subdomain}>
+          {
+            ({ loading, error, data }) => {
+              const cannotRegister = !(data&&data.checkENS.available);
+              const inputIcon = data?(data.checkENS.available?"✅":"❌"):"🖋";
+
+              return (
+                <div className="shrinkwrap-container">
+                  <H1>Pick A Username</H1>
+                  <GlassTextInput className="subdomain-input" tail=".multiapp.eth" icon={inputIcon} autoFocus value={subdomain} onChange={this.handleInput} name="subdomain" type="text" />
+                  <div className="buttons">
+                    <Link to="/welcome">
+                      <GlassButton>{`Nevermind`}</GlassButton>
+                    </Link>
+                    <Link to="/phone-verification">
+                      <GlassButton disabled={cannotRegister}>{`Register`}</GlassButton>
+                    </Link>
                   </div>
-                );
-              }}
-            </MockCheckENSQuery>
-          </div>
-          <div className="buttons">
-            <Link className="button" to="/welcome">
-              {`< Nevermind`}
-            </Link>
-            <Link className="button" to="/phone-verification">
-              {`Register >`}
-            </Link>
-          </div>
-        </div>
+                </div>
+              )
+            }
+          }
+        </MockCheckENSQuery>
+
+
         {ScreenStyles}
         <style jsx>{`
           .header {
@@ -76,24 +90,6 @@ export default class RegisterScreen extends React.Component {
             justify-content: center;
           }
 
-          .subdomain-input{
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 24px;
-            text-align: center;
-            color: ${colors.blue2};
-          }
-
-          .availability{
-            margin-top: 5px;
-            height: 1em;
-            color: ${colors.white2};
-          }
-
           .buttons{
             width: 100%;
             margin-top: 20px;
@@ -102,18 +98,12 @@ export default class RegisterScreen extends React.Component {
             width: 100%;
           }
 
-          .buttons :global(.button){
-            color: ${colors.blue2};
-            text-decoration: none;
-            background: ${colors.white2};
-            padding: 10px;
-            border-radius: 5px;
+          .buttons > :global(*){
             margin-left: 20px;
-            flex-grow: 1;
-            text-align: center;
+            width: 50%;
           }
 
-          .buttons :global(.button:first-child){
+          .buttons > :global(*:first-child){
             margin-left: 0;
           }
         `}</style>
