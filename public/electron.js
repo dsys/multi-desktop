@@ -6,7 +6,7 @@ const isDev = require('electron-is-dev');
 
 let primaryWindow = null;
 const primaryWindowURL = isDev
-  ? 'http://localhost:3000'
+  ? `http://localhost:3000?isDev=${isDev}`
   : `file://${path.join(__dirname, '../build/index.html')}`
 const primaryWindowWidth = 1200;
 const primaryWindowHeight = 800;
