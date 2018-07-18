@@ -78,7 +78,7 @@ export default class GlassTextInput extends React.Component{
 
           .tail{
             color: ${Color(colors.white2).alpha(0.5)};
-            cursor: pointer;
+            cursor: help;
           }
           .tail:hover{
             color: ${colors.white2};

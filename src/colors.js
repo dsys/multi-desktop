@@ -12,7 +12,9 @@ const colors = {
   blue3: '#2564DA',
   green1: '#1DA81D',
   yellow1: '#F5C223',
-  red1: '#D0021B'
+  red1: '#D0021B',
+  blueLagoon: '#06858C',
+  emerald: '#45C48B',
 };
 
 colors.blue2dark = Color(colors.blue2).darken(0.7).rgb().string()

@@ -9,6 +9,7 @@ import TitleBar from './TitleBar';
 import HomeScreen from './HomeScreen';
 import WelcomeScreen from './WelcomeScreen';
 import RegisterScreen from './RegisterScreen';
+import PhoneVerificationScreen from './PhoneVerificationScreen';
 
 const SETUP_DEV = true;
 
@@ -22,7 +23,7 @@ export default class App extends React.Component {
             <Switch>
               <Route path="/welcome" component={ WelcomeScreen } />
               <Route path="/register" component={ RegisterScreen } />
-              <Route path="/phone-verification" component={ WelcomeScreen } />
+              <Route path="/phone-verification" component={ PhoneVerificationScreen } />
               <Route path="/link-device" component={ WelcomeScreen } />
               <Route exact path="/" component={ (ActiveProfile && !SETUP_DEV) ? HomeScreen:WelcomeScreen } />
             </Switch>

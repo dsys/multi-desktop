@@ -5,11 +5,11 @@ import { Query } from "react-apollo";
 import MockCheckENSQuery from './MockCheckENSQuery'
 import { Link } from "react-router-dom";
 
+import Screen from './Screen';
 import H1 from './H1';
 import GlassButton from './GlassButton';
 import GlassTextInput from './GlassTextInput'
 import { default as colors } from './colors';
-import ScreenStyles from "./ScreenStyles";
 
 const GQL_mutation_registerENS = gql(`
   mutation registerENS($subdomain: String!) {
@@ -46,8 +46,7 @@ export default class RegisterScreen extends React.Component {
   render() {
     const {runENSQuery, subdomain} = this.state;
     return(
-      <div className="screen-container">
-
+      <Screen>
         <MockCheckENSQuery skip={!runENSQuery} subdomain={subdomain}>
           {
             ({ loading, error, data }) => {
@@ -56,7 +55,9 @@ export default class RegisterScreen extends React.Component {
 
               return (
                 <div className="shrinkwrap-container">
-                  <H1>Pick A Username</H1>
+                  <div className="header">
+                    <H1>Pick A Username</H1>
+                  </div>
                   <GlassTextInput className="subdomain-input" tail=".multiapp.eth" icon={inputIcon} autoFocus value={subdomain} onChange={this.handleInput} name="subdomain" type="text" />
                   <div className="buttons">
                     <Link to="/welcome">
@@ -72,15 +73,9 @@ export default class RegisterScreen extends React.Component {
           }
         </MockCheckENSQuery>
 
-
-        {ScreenStyles}
         <style jsx>{`
-          .header {
-            font-family: Lobster;
-            font-size: 64px;
-            font-weight: 700;
-            text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
-            color: ${colors.white2};
+          .header{
+            margin-bottom: 10px;
           }
 
           .shrinkwrap-container{
@@ -107,7 +102,7 @@ export default class RegisterScreen extends React.Component {
             margin-left: 0;
           }
         `}</style>
-      </div>
+      </Screen>
     )
   }
 }

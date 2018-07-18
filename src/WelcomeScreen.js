@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-import ScreenStyles from './ScreenStyles';
+import Screen from './Screen';
 import H1 from './H1';
 import { default as colors } from './colors';
 
@@ -9,7 +9,7 @@ export default class WelcomeScreen extends React.Component {
 
   render() {
     return (
-      <div className="screen-container">
+      <Screen>
 
         <div className="centering-container">
           <H1>
@@ -26,7 +26,6 @@ export default class WelcomeScreen extends React.Component {
             </Link>
           </div>
         </div>
-        {ScreenStyles}
         <style jsx>{`
           .centering-container{
             display: flex;
@@ -72,10 +71,10 @@ export default class WelcomeScreen extends React.Component {
 
           .buttons :global(.button:hover){
             background: ${colors.white2};
-            color: ${colors.blue2};
+            color: ${colors.blueLagoon};
           }
         `}</style>
-      </div>
+      </Screen>
     )
   }
 }
