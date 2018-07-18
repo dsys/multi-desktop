@@ -58,13 +58,13 @@ export default class RegisterScreen extends React.Component {
                   <div className="header">
                     <H1>Pick A Username</H1>
                   </div>
-                  <GlassTextInput className="subdomain-input" tail=".multiapp.eth" icon={inputIcon} autoFocus value={subdomain} onChange={this.handleInput} name="subdomain" type="text" />
+                  <GlassTextInput className="subdomain-input" tail=".multiapp.eth" icon={inputIcon} autoFocus value={subdomain} onChange={this.handleInput} name="subdomain" />
                   <div className="buttons">
                     <Link to="/welcome">
-                      <GlassButton>{`Nevermind`}</GlassButton>
+                      <GlassButton>{`Back`}</GlassButton>
                     </Link>
                     <Link to="/phone-verification">
-                      <GlassButton disabled={cannotRegister}>{`Register`}</GlassButton>
+                      <GlassButton>{`Register`}</GlassButton>
                     </Link>
                   </div>
                 </div>

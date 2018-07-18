@@ -4,7 +4,7 @@ import { default as colors } from './colors';
 
 export default class GlassTextInput extends React.Component{
   render(){
-    const {className, children, icon=false, tail, ...rest} = this.props;
+    const {className, children, icon=false, tail, type, ...rest} = this.props;
     return(
       <div className="container">
         <div className="mirror icon-only">
@@ -16,7 +16,7 @@ export default class GlassTextInput extends React.Component{
           <div className="icon hidden">
             {icon}
           </div>
-          <input type="text" className={`${className?className:''}`} {...rest} />
+          <input type={type&&"text"} className={`${className?className:''}`} {...rest} />
           <span className="tail">{tail}</span>
         </div>
         <style jsx>{`
