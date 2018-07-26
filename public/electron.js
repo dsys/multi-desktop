@@ -8,8 +8,8 @@ let primaryWindow = null;
 const primaryWindowURL = isDev
   ? `http://localhost:3000`
   : `file://${path.join(__dirname, '../build/index.html')}`
-const primaryWindowWidth = 1200;
-const primaryWindowHeight = 800;
+const primaryWindowWidth = 1000;
+const primaryWindowHeight = 600;
 
 let tray = null;
 let trayWindow = null;

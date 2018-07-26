@@ -8,7 +8,7 @@ export default class LinkDeviceScreen extends React.Component{
     return(
       <Screen>
       <H1>Link Device</H1>
-      
+
       </Screen>
     );
   }
