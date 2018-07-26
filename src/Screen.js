@@ -19,10 +19,11 @@ export default class Screen extends React.Component{
             padding: 10px;
             box-sizing: border-box;
 
-            font-family: Roboto;
+            font-family: "Helvetica Neue";
 
             background: ${colors.blueLagoon};
             background: linear-gradient(320deg, ${colors.blueLagoon} 16%, ${colors.emerald} 100%);
+            color: ${colors.white2};
           }
 
           ::selection {
