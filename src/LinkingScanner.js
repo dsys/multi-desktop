@@ -17,7 +17,9 @@ export default class LinkingScanner extends React.Component{
 
   handleScan = (data) => {
     const { onScan } = this.props;
+    console.log('SCAN');
     if(data){
+      console.log(`Scanned: ${data}`);
       this.setState({data, delay:false, deviceFound:true});
       onScan(data);
     }
@@ -52,14 +54,6 @@ export default class LinkingScanner extends React.Component{
               <div className="device-number">{`C02T51HCH040`}</div>
             </div>
           </div>
-          <div className="buttons">
-            <div className="button">
-              <GlassButton onClick={this.handleCancel}>Cancel</GlassButton>
-            </div>
-            <div onClick={this.handleLink} className="button">
-              <GlassButton>Link</GlassButton>
-            </div>
-          </div>
         </div>
         <div className="reader-container">
           <QRReader
@@ -68,7 +62,7 @@ export default class LinkingScanner extends React.Component{
             onScan={this.handleScan}
             onLoad={this.handleLoad}
             showViewFinder={false}
-            style={{ width: '100%' }}
+            style={{ height: '100%', width: '100%' }}
           />
         </div>
         <style jsx>{`
@@ -76,6 +70,8 @@ export default class LinkingScanner extends React.Component{
             width: 100%;
             height: 100%;
             position: relative;
+            box-sizing: border-box;
+            padding: 20px;
           }
           .loader{
             width: 100%;

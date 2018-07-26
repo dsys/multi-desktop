@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class SoftLightBG extends React.Component{
   render(){
-    const {width="260px", height="260px", padding="20px", children} = this.props;
+    const {width="300px", height="300px", padding="20px", children} = this.props;
     return(
       <div className="container">
         <div className="inner blender">
@@ -18,9 +18,9 @@ export default class SoftLightBG extends React.Component{
           }
           .inner{
             padding: ${padding};
-            border-radius: 5px;
             width: ${width};
             height: ${height};
+            box-sizing: border-box;
           }
           .inner.blender{
             background: #000;
